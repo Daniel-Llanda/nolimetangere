@@ -35,7 +35,7 @@
     </div>
 
        {{-- Ibarra --}} 
-    <div id="ibarra" class="absolute bottom-20 left-20 flex flex-col items-center">
+    <div id="ibarra" class="absolute bottom-20 left-20 flex flex-col items-center z-20">
         <div id="dialog-ibarra" class="hidden mb-2 bg-white/80 text-black text-xs px-3 py-2 rounded shadow max-w-xs text-center"></div>
         <img src="{{ asset('images/chapter_one/ibarra.png') }}" alt="Ibarra" class="h-40">
     </div>
@@ -64,6 +64,23 @@
         <div id="dialog-tiago" class="hidden mb-2 bg-white/80 text-black text-xs px-3 py-2 rounded shadow max-w-xs text-center"></div>
         <img src="{{ asset('images/chapter_one/kapitan_tiago.png') }}" alt="Kapitan Tiago" class="h-40">
     </div>
+
+
+     {{--Don Tiburcio --}}
+    <div id="don-tiburcio" class="absolute bottom-20 left-60 flex flex-col items-center hidden">
+        <div id="dialog-tiburcio" class="hidden mb-2 bg-white/80 text-black text-xs px-3 py-2 rounded shadow max-w-xs text-center"></div>
+        <img src="{{ asset('images/chapter_one/don_tiburcio.png') }}" alt="Don Tiburcio" class="h-40">
+    </div>
+
+     {{--Dona Victorina --}}
+    <div id="dona-victorina" class="absolute bottom-20 left-[36rem] flex flex-col items-center hidden">
+        <div id="dialog-victorina" class="hidden mb-2 bg-white/80 text-black text-xs px-3 py-2 rounded shadow max-w-xs text-center"></div>
+        <img src="{{ asset('images/chapter_one/dona_victorina.png') }}" alt="Dona Victorina" class="h-40">
+    </div>
+
+
+
+
     <!-- Choice Box -->
     <div id="choice-box" class="hidden absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-white/90 p-4 rounded shadow-lg space-y-2 text-sm text-black text-center">
         <p class="font-semibold mb-2">Piliin ang tugon ni Ibarra:</p>
@@ -72,22 +89,53 @@
         <button class="choice-btn bg-yellow-300 hover:bg-yellow-400 px-4 py-2 rounded" data-response="(Manahimik at ngumiti nang magalang.)">(Manahimik at ngumiti nang magalang.)</button>
     </div>
 
-    <div class="absolute bottom-[12rem] left-[67rem] flex flex-col items-center w-16 h-16 bg-red-600">
+    <!-- Post Puzzle Choice -->
+    <div id="post-puzzle-choice" class="hidden absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-white/90 p-4 rounded shadow-lg space-y-2 text-sm text-black text-center z-50">
+        <p class="font-semibold mb-2">Tugon ni Ibarra?</p>
+        <button class="post-choice-btn bg-green-300 hover:bg-green-400 px-4 py-2 rounded" data-response="Isang karangalan pong makasalo ang mga taong may karanasan sa pamahalaan.">“Isang karangalan pong makasalo ang mga taong may karanasan sa pamahalaan.”</button>
+        <button class="post-choice-btn bg-green-300 hover:bg-green-400 px-4 py-2 rounded" data-response="Mas mahalaga pa rin ang puso kaysa sa posisyon, hindi po ba?">“Mas mahalaga pa rin ang puso kaysa sa posisyon, hindi po ba?”</button>
+    </div>
+
+    <div id="ibarra-choices" class="hidden mt-4 absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-white/90 p-4 rounded shadow-lg space-y-2 text-sm text-black text-center">
+        <button class="ibarra-choice-btn bg-blue-300 hover:bg-blue-400 px-4 py-2 rounded">
+            <span>“Ang pagkatao ng isang tao ay hindi nasusukat sa nakaraan, kundi sa kanyang ginagawa sa kasalukuyan.”</span><br>
+        </button>
+        <button class="ibarra-choice-btn bg-blue-300 hover:bg-blue-400 px-4 py-2 rounded">
+            <span>“Hindi ko na lang sila papansinin. Alam ko kung sino ako.”</span><br>
+        </button>
+    </div>
+
+
+
+  <!-- MODAL CONTAINER -->
+    <div id="guestGameModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full shadow-lg">
+            <h2 class="text-xl font-bold mb-4 text-center">MINI-GAME 2: “SINO ANG DUMALO?”</h2>
+            <div id="mini-game" class="text-center"></div>
+        </div>
+    </div>
+
+
+
+
+    <div class="absolute bottom-[12rem] left-[67rem] flex flex-col items-center w-16 h-16">
         <img src="{{ asset('images/chapter_one/don_rafael.png') }}" alt="">
     </div>
     <div id="puzzle-modal" class="hidden fixed inset-0 bg-black z-50 flex items-center justify-center">
         <div class=" p-4 w-[320px] h-[320px] relative">
             <h2 class="text-center font-bold mb-2 text-white">Ayusin ang Larawan</h2>
             <div id="puzzle-board" class="grid grid-cols-3 gap-1 w-full h-full"></div>
-            <button onclick="closePuzzle()" class="absolute top-2 right-2 text-xs text-red-500">X</button>
+            {{-- <button onclick="closePuzzle()" class="absolute top-2 right-2 text-xs text-red-500">X</button> --}}
         </div>
     </div>
+    
 
 
 </main>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        
         const tooltip = document.getElementById('tooltip');
 
         const dialogSequence = [
@@ -97,7 +145,6 @@
             { id: 'dialog-damaso', text: '“Ang edukasyon sa Europa ay walang saysay kung hindi naman makadiyos!”' },
             { id: 'dialog-isabel', text: '“Padre, si Crisóstomo po ay anak ni Don Rafael. Isa pong mabuting tao.”' },
             { id: 'dialog-damaso', text: '“Don Rafael? Hmph! Isa siyang erehe! Walang respeto sa simbahan!”' }
-            // After this → show ibarraChoices
         ];
 
 
@@ -129,7 +176,7 @@
             });
         });
 
-
+        
 
         document.addEventListener('keydown', (e) => {
             if (!started && e.key === 'Enter') {
@@ -197,7 +244,206 @@
         });
         const puzzleModal = document.getElementById('puzzle-modal');
         const puzzleBoard = document.getElementById('puzzle-board');
+        const padreDamaso = document.getElementById('padre-damaso');
+        const padreSibyla = document.getElementById('padre-sibyla');
+        const tiyaIsabel = document.getElementById('tiya-isabel');
+        const kapitanTiago = document.getElementById('kapitan-tiago');
+
+
         let puzzleStarted = false;
+
+        let puzzleDialogStep = 0;
+        let puzzleDialogActive = false;
+
+        document.addEventListener('keydown', (e) => {
+            tooltip.classList.add('hidden');
+            if (puzzleDialogActive && e.key === 'Enter') {
+                if (puzzleDialogStep > 0) {
+                    const prev = document.getElementById(dialogSequenceAfterPuzzle[puzzleDialogStep - 1].id);
+                    if (prev) prev.classList.add('hidden');
+                }
+
+                if (puzzleDialogStep < dialogSequenceAfterPuzzle.length) {
+                    const current = document.getElementById(dialogSequenceAfterPuzzle[puzzleDialogStep].id);
+                    if (current) {
+                        current.innerText = dialogSequenceAfterPuzzle[puzzleDialogStep].text;
+                        current.classList.remove('hidden');
+                    }
+                    puzzleDialogStep++;
+                } else {
+                    puzzleDialogActive = false;
+                    setTimeout(() => {
+                        document.getElementById('post-puzzle-choice').classList.remove('hidden');
+                    }, 500);
+                }
+            }
+        });
+
+        document.querySelectorAll('.post-choice-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('post-puzzle-choice').classList.add('hidden');
+                ibarraDialog.innerText = btn.getAttribute('data-response');
+                ibarraDialog.classList.remove('hidden');
+
+                setTimeout(() => {
+                    ibarraDialog.classList.add('hidden');
+                    document.getElementById('narrator').innerText = "MINI-GAME 2: “SINO ANG DUMALO?”";
+                    document.getElementById('guestGameModal').classList.remove('hidden'); // show modal
+                    startGuestGame();
+                }, 3000);
+            });
+        });
+
+        function startGuestGame() {
+            const gameHolder = document.getElementById('mini-game');
+            gameHolder.innerHTML = ''; // clear
+            const guests = [
+                { name: "Kapitan Tiago", img: "kapitan_tiago.png" },
+                { name: "Doña Victorina", img: "dona_victorina.png" },
+                { name: "Padre Damaso", img: "padre_damaso.png" },
+                { name: "Padre Sibyla", img: "padre_sibyla.png" },
+                { name: "Don Tiburcio", img: "don_tiburcio.png" }
+            ];
+
+            let currentIndex = 0;
+            let score = 0;
+
+            const guestList = document.createElement('div');
+            guestList.innerHTML = `
+                <h3 class="text-lg font-bold mb-2">TANDAAN ANG MGA PANGALAN:</h3>
+                <ul class="mb-4 space-y-1">${guests.map(g => `<li>${g.name}</li>`).join('')}</ul>
+            `;
+            gameHolder.appendChild(guestList);
+
+            setTimeout(() => {
+                guestList.remove();
+                showQuestion();
+            }, 4000);
+            const choiceIbarraBox = document.getElementById('ibarra-choices');
+
+            function showQuestion() {
+                if (currentIndex >= guests.length) {
+                    gameHolder.innerHTML = `
+                        <p class="text-green-700 font-semibold mb-4">Tapos na! Tamang sagot: ${score}/${guests.length}</p>
+                        <button id="closeGame" class="mt-2 bg-gray-700 text-white px-4 py-1 rounded">Isara</button>
+                    `;
+                    document.getElementById('closeGame').addEventListener('click', () => {
+                        document.getElementById('guestGameModal').classList.add('hidden');
+
+                       
+
+                        // Reset display
+                        narrator.classList.remove('hidden');
+                        choiceIbarraBox.classList.add('hidden');
+                        ibarraDialog.classList.add('hidden');
+
+                        // Narrator text
+                        narrator.innerText = "Si Ibarra ay may nadinig na nagbubulungan.\n\n" +
+                            "Bisita 1:\n“Hindi ba’t anak siya ng lalaking nakulong dahil sa pari?”\n" +
+                            "Bisita 2:\n“Oo, pero matalino raw siya. Malayo na ang narating sa Europa!”";
+
+                        // ENTER key listener
+                        const enterListener = (e) => {
+                            if (e.key === "Enter") {
+                                narrator.classList.add('hidden');
+                                choiceIbarraBox.classList.remove('hidden');
+                                document.removeEventListener('keydown', enterListener);
+                            }
+                        };
+
+                        // Attach listener AFTER narrator is visible
+                        setTimeout(() => {
+                            document.addEventListener('keydown', enterListener);
+                        }, 0); // Ensures the listener is added after everything is shown
+
+                    });
+                    document.querySelectorAll('#ibarra-choices .ibarra-choice-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const ibarraDialog = document.getElementById('dialog-ibarra');
+                            const choiceIbarraBox = document.getElementById('ibarra-choices');
+
+                            // ✅ Get the response text inside <span>
+                            const response = btn.querySelector('span').innerText;
+
+                            // ✅ Display Ibarra's response
+                            ibarraDialog.innerText = response;
+                            ibarraDialog.classList.remove('hidden');
+
+                            // ✅ Hide the choices
+                            choiceIbarraBox.classList.add('hidden');
+                            
+                                  // 🔑 Wait for Enter to show next narrator message
+                            const enter1 = (e) => {
+                                if (e.key === "Enter") {
+                                    ibarraDialog.classList.add('hidden');
+                                    narrator.classList.remove('hidden');
+                                    narrator.innerText = "“Ibarra ay lumuhod sa altar. Ang mga kandila ay marahang kumikislap...”";
+                                    document.removeEventListener('keydown', enter1);
+
+                                    // 2nd Enter: Ibarra's prayer
+                                    const enter2 = (e2) => {
+                                        if (e2.key === "Enter") {
+                                            narrator.classList.add('hidden');
+                                            ibarraDialog.innerText = "“Diyos ko, nawa’y gabayan Mo ako sa pagbabalik ko sa bayang ito.”";
+                                            ibarraDialog.classList.remove('hidden');
+                                            document.removeEventListener('keydown', enter2);
+
+                                            // 3rd Enter: Final narrator line
+                                            const enter3 = (e3) => {
+                                                if (e3.key === "Enter") {
+                                                    ibarraDialog.classList.add('hidden');
+                                                    narrator.innerText = "“Sa gabing iyon, bumalik ang binatang Ibarra—dala ang alaala ng ama, ang bigat ng lipunan, at ang diwa ng pag-asa.”";
+                                                    narrator.classList.remove('hidden');
+                                                    document.removeEventListener('keydown', enter3);
+                                                }
+                                            };
+
+                                            document.addEventListener('keydown', enter3);
+                                        }
+                                    };
+
+                                    document.addEventListener('keydown', enter2);
+                                }
+                            };
+                            document.addEventListener('keydown', enter1);
+                        });
+                    });
+
+                    return;
+                }
+
+                const guest = guests[currentIndex];
+                const choices = [guest.name];
+                while (choices.length < 3) {
+                    const random = guests[Math.floor(Math.random() * guests.length)].name;
+                    if (!choices.includes(random)) choices.push(random);
+                }
+
+                choices.sort(() => Math.random() - 0.5);
+
+                gameHolder.innerHTML = `
+                    <div class="text-center">
+                        <img src="{{ asset('images/chapter_one/${guest.img}') }}" alt="portrait" class="w-24 h-24 mx-auto mb-3 border border-gray-400 rounded-full">
+                        <div class="space-y-2">
+                            ${choices.map(name => `<button class="guest-choice bg-orange-500 hover:bg-orange-600 text-white py-1 px-3 rounded" data-name="${name}">${name}</button>`).join('')}
+                        </div>
+                    </div>
+                `;
+
+                document.querySelectorAll('.guest-choice').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        if (btn.getAttribute('data-name') === guest.name) {
+                            score++;
+                        }
+                        currentIndex++;
+                        showQuestion();
+                    });
+                });
+            }
+        }
+
+
+        
 
         // Generate puzzle pieces
        function createPuzzlePieces() {
@@ -253,12 +499,31 @@
 
             checkSolved();
         }
+        const dialogSequenceAfterPuzzle = [
+            { id: 'dialog-tiburcio', text: '(mahina): “Mahal na Kapitan, napakaganda ng salu-salo ninyo...”' },
+            { id: 'dialog-victorina', text: '“Aba! Siyempre naman! Si Tiburcio ay dating opisyal ng gobyerno sa Espanya!”' },
+            { id: 'dialog-tiago', text: '“Masaya kami’t kayo’y narito. At siyempre, masaya kaming makadaupang-palad si Ibarra.”' }
+        ];
+        
 
         function checkSolved() {
             const pieces = [...puzzleBoard.children];
             const correct = pieces.every((el, idx) => parseInt(el.dataset.index) === idx);
             if (correct) {
                 alert('Tama! Nabuo mo ang larawan.');
+                padreDamaso.style.display = 'none';
+                padreSibyla.style.display = 'none';
+                tiyaIsabel.style.display = 'none';
+                
+
+                document.getElementById('don-tiburcio').classList.remove('hidden');
+                document.getElementById('dona-victorina').classList.remove('hidden');
+                document.getElementById('kapitan-tiago').classList.remove('hidden');
+
+                puzzleDialogStep = 0;            // ✅ Start dialog sequence
+                puzzleDialogActive = true;
+                tooltip.classList.remove('hidden');
+
                 closePuzzle();
             }
         }
